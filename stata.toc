@@ -1,0 +1,7 @@
+v 1.0.0
+d Meiting Wang
+d Institute for Economic and Social Research, Jinan University
+d Guangzhou, China
+d wangmeiting92@gmail.com
+
+p lpoly - Perform one-dimensional local polynomial regression like lpoly, but more coefficients can be additionally obtained
