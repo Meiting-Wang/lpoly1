@@ -20,7 +20,8 @@
 {help lpoly1##Options:Options}{break}
 {help lpoly1##Kernel:Kernels}{break}
 {help lpoly1##Examples:Examples}{break}
-{help lpoly1##Author:Author}
+{help lpoly1##Author:Author}{break}
+{help lpoly1##Also_see:Also see}{break}
 
 
 {* -----------------------------Description------------------------------------ *}{...}
@@ -86,4 +87,10 @@ Meiting Wang{break}
 Institute for Economic and Social Research, Jinan University{break}
 Guangzhou, China{break}
 wangmeiting92@gmail.com
+
+
+{* -----------------------------Also see------------------------------------ *}{...}
+{marker Also_see}{title:Also see}
+
+{space 4}{help lpoly}
 
