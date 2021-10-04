@@ -55,60 +55,60 @@ mata: BETA = J(`at_num',`degree'+1,.)
 
 
 * 核心程序
-gen `one' = 1
+qui gen `one' = 1
 forvalues i = 1/`=_N' {
 	if `at'[`i'] == . { //这里要求 `at' 的缺漏值都在尾端
 		continue, break
 	}
 
 	preserve
-	gen `X_std' = (`X'-`at'[`i']) / `bwidth' //标准化 `X'
+	qui gen `X_std' = (`X'-`at'[`i']) / `bwidth' //标准化 `X'
 	local zc_st "`one'" //z column sentence
 	if `degree' >= 1 {
 		forvalues j = 1/`degree' {
-			gen `zc`j'' = `X_std'^`j'
+			qui gen `zc`j'' = `X_std'^`j'
 			local zc_st "`zc_st' `zc`j''"
 		}
 	}
 
 	*- 针对不同的 kernel function 生成不同的 k 和 index(kernel function 的类型有：gaussian, epanechnikov, epan2, biweight, cosine, rectangle, triangle, parzen, gaussian_m)
 	if "`kernel'" == "gaussian" {
-		gen `k' = normalden(`X_std')
-		gen `index' = 1
+		qui gen `k' = normalden(`X_std')
+		qui gen `index' = 1
 	}
 	else if "`kernel'" == "epanechnikov" {
-		gen `k' = 3/4 * (1 - `X_std'^2/5) / sqrt(5)
-		gen `index' = (abs(`X_std') < sqrt(5))
+		qui gen `k' = 3/4 * (1 - `X_std'^2/5) / sqrt(5)
+		qui gen `index' = (abs(`X_std') < sqrt(5))
 	}
 	else if "`kernel'" == "epan2" {
-		gen `k' = 3/4 * (1 - `X_std'^2)
-		gen `index' = (abs(`X_std') < 1)
+		qui gen `k' = 3/4 * (1 - `X_std'^2)
+		qui gen `index' = (abs(`X_std') < 1)
 	}
 	else if "`kernel'" == "biweight" {
-		gen `k' = 15/16 * (1 - `X_std'^2)^2
-		gen `index' = (abs(`X_std') < 1)
+		qui gen `k' = 15/16 * (1 - `X_std'^2)^2
+		qui gen `index' = (abs(`X_std') < 1)
 	}
 	else if "`kernel'" == "cosine" {
-		gen `k' = 1 + cos(2*_pi*`X_std')
-		gen `index' = (abs(`X_std') < 0.5)
+		qui gen `k' = 1 + cos(2*_pi*`X_std')
+		qui gen `index' = (abs(`X_std') < 0.5)
 	}
 	else if "`kernel'" == "rectangle" {
-		gen `k' = 0.5
-		gen `index' = (abs(`X_std') < 1)
+		qui gen `k' = 0.5
+		qui gen `index' = (abs(`X_std') < 1)
 	}
 	else if "`kernel'" == "triangle" {
-		gen `k' = 1 - abs(`X_std')
-		gen `index' = (abs(`X_std') < 1)
+		qui gen `k' = 1 - abs(`X_std')
+		qui gen `index' = (abs(`X_std') < 1)
 	}
 	else if "`kernel'" == "parzen" {
-		gen `k' = 4/3 - 8*`X_std'^2 + 8*(abs(`X_std'))^3
+		qui gen `k' = 4/3 - 8*`X_std'^2 + 8*(abs(`X_std'))^3
 		qui replace `k' = 8 * (1-abs(`X_std'))^3 / 3 if (abs(`X_std')>0.5) & (abs(`X_std')<=1)
-		gen `index' = (abs(`X_std') <= 1)
+		qui gen `index' = (abs(`X_std') <= 1)
 	}
 	else if "`kernel'" == "gaussian_m" {
-		gen `k' = normalden(`X_std')
+		qui gen `k' = normalden(`X_std')
 		qui replace `k' = normalden(5) * (4*(6-abs(`X_std'))^5-6*(6-abs(`X_std'))^4+3*(6-abs(`X_std'))^3) if (abs(`X_std')>5) & (abs(`X_std')<=6)
-		gen `index' = (abs(`X_std') <= 6)
+		qui gen `index' = (abs(`X_std') <= 6)
 	}
 	else {
 		dis as error "Invalid kernel function"
