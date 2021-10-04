@@ -62,6 +62,7 @@ forvalues i = 1/`=_N' {
 	}
 
 	preserve
+	qui drop if (`Y'==.) | (`X'==.)
 	qui gen `X_std' = (`X'-`at'[`i']) / `bwidth' //标准化 `X'
 	local zc_st "`one'" //z column sentence
 	if `degree' >= 1 {
