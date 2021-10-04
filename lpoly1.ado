@@ -47,6 +47,11 @@ if `degree' >= 1 {
 
 * 获得因变量和自变量
 gettoken Y X: varlist
+if ustrtrim("`X'") == "`at'" {
+	dis as error "Variables in {opt at(varname)} and {it:xvar} should not be the same."
+	error 9999
+} //at(varname) 和 xvar 中的变量不应该一样
+
 
 * 设置结果储存矩阵
 qui count if `at' != .
