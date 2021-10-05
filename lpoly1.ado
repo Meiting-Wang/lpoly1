@@ -67,7 +67,7 @@ forvalues i = 1/`=_N' {
 	}
 
 	preserve
-	replace `X' = . if `Y' == . //解决当Y为缺漏值而X不为缺漏值产生的bug(当X为缺漏值为Y不为缺漏值时没有bug)
+	qui replace `X' = . if `Y' == . //解决当Y为缺漏值而X不为缺漏值产生的bug(当X为缺漏值为Y不为缺漏值时没有bug)
 	qui gen `X_std' = (`X'-`at'[`i']) / `bwidth' //标准化 `X'
 	local zc_st "`one'" //z column sentence
 	if `degree' >= 1 {

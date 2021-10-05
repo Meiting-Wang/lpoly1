@@ -9,7 +9,7 @@ do the local polynomial regression of Y on X
 clear all
 macro drop _all
 cls
-global n = 10000
+global n = 100000
 global h = 0.1 //bandwidth
 global degree = 3
 global kernel "epan2"
@@ -83,4 +83,6 @@ end
 * lpoly 命令的检验
 lpoly Y X, kernel(epan2) bwidth($h) degree($degree) at(x) generate(beta0_cheak) nograph
 
-list x beta0* in 1/50
+gen diff = abs(beta0 - beta0_cheak)
+list x beta0* diff in 1/50
+sum x beta0* diff
