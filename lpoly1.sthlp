@@ -49,7 +49,7 @@ It is worth noting that this command can be only used in version 16.0 or later.
 {synopt :{opt d:egree(integer>=0)}}Specify the degree of the polynomial. A nonnegative integer number is required, 3 as the default.{p_end}
 {synopt :{opth keep:(strings:string)}}Choose which variables in {bf:beta0}, {bf:beta1},..., {bf:betap} to keep.{p_end}
 {synoptline}
-{space 4}{it:Notes:} Variables in {opth at:(varname)} and {it:{help varname:xvar}} should not be the same.
+{space 4}{it:Notes}: Variables in {opth at:(varname)} and {it:{help varname:xvar}} should not be the same.
 
 
 {* -----------------------------kernel------------------------------------ *}{...}
