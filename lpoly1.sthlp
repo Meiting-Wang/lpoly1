@@ -2,7 +2,7 @@
 {right:Created time: Oct 1, 2021}
 {* -----------------------------title------------------------------------ *}{...}
 {p 0 17 2}
-{bf:[W-19] lpoly1} {hline 2} Perform one-dimensional local polynomial regression like {help lpoly}, but more coefficients can be additionally obtained. You can view source code in {browse "https://github.com/Meiting-Wang/lpoly1":github}.
+{bf:[W-20] lpoly1} {hline 2} Perform one-dimensional local polynomial regression like {help lpoly}, but more coefficients can be additionally obtained. You can view source code in {browse "https://github.com/Meiting-Wang/lpoly1":github}.
 
 
 {* -----------------------------Syntax------------------------------------ *}{...}
