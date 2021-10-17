@@ -127,7 +127,7 @@ forvalues i = 1/`=_N' {
 }
 
 *- 得到符合 derivative 的 BETA
-mata: BETA = BETA * diag((1,(factorial(1..`degree') :/ (J(1,`degree',`bwidth'):^(1..`degree')))))
+mata: BETA = BETA * diag((factorial(0..`degree') :/ (J(1,`degree'+1,`bwidth'):^(0..`degree'))))
 
 *- 生成 keep 中的变量
 local beta_select_num = ustrwordcount("`keep'")
