@@ -52,7 +52,7 @@ if "`x'" == "`X'" {
 * 使用子程序中的 one_dimen_lpoly() 函数，计算 one dimensional 的 lpoly, 并保存所设定的变量
 qui ds
 local varlist_old "`r(varlist)'"
-mata: one_dimen_lpoly("Y","X","x","`kernel'",`bwidth',`degree')
+mata: one_dimen_lpoly("`Y'","`X'","`x'","`kernel'",`bwidth',`degree')
 keep `varlist_old' `keep'
 
 
