@@ -46,8 +46,8 @@ It is worth noting that this command can be only used in version 16.0 or later.
 {synoptline}
 {synopt :{opth at:(varname)}}Specify the variable to calculate derivatives({bf:0th} order to {bf:pth} order). If the variable has missing values, the missing values need to be at the end.{p_end}
 {synopt :{opth ker:nel(lpoly1##Kernel:kernel)}}Specify the kernel function, {bf:gaussian} as the default.{p_end}
-{synopt :{opt bw:idth(real>0)}}Specify kernel bandwidth. A positive real number is required, 0.1 as the default.{p_end}
-{synopt :{opt d:egree(integer>=0)}}Specify the degree of the polynomial. A nonnegative integer number is required, 3 as the default.{p_end}
+{synopt :{opt bw:idth(real>0)}}Specify kernel bandwidth. A positive real number is required. 0.1 as the default.{p_end}
+{synopt :{opt d:egree(integer>=0)}}Specify the degree of the polynomial. A nonnegative integer number is required. 3 as the default.{p_end}
 {synopt :{opth keep:(strings:string)}}Choose which variables in {bf:beta0}, {bf:beta1},..., {bf:betap} to keep.{p_end}
 {synoptline}
 {space 4}{it:Notes}: Variables in {opth at:(varname)} and {it:{help varname:xvar}} should not be the same.
