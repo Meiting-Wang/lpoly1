@@ -9,7 +9,7 @@
 program define lpoly1
 version 16.0
 
-syntax varlist(min=2 max=2 numeric) , at(varlist numeric max=1) [KERnel(string) BWidth(numlist max=1 >0) Degree(numlist max=1 >=0 integer) keep(namelist)]
+syntax varlist(min=2 max=2 numeric) , at(varlist numeric max=1) [KERnel(string) BWidth(numlist max=1 >0) Degree(numlist max=1 >=0 integer) keep(string)]
 
 * 默认值(设定 degree keep kernel bwidth 的默认值)
 if "`degree'" == "" {
@@ -32,10 +32,10 @@ if "`bwidth'" == "" {
 
 
 * 错误输入识别
-if ~ustrregexm("`keep'","^beta\d+(\s+beta\d+)*$") {
+if ~ustrregexm("`keep'","(^beta\d(\s+beta\d)*$)|(^beta\d-beta\d$)") {
 	dis as error "Option {opt keep} synatx error"
 	error 9999
-} //保证 keep 输入的是 "beta0 beta1 ..." 类似语句
+} //保证 keep 输入的是 "beta0 beta1 ..." 或 "beta0-beta2" 的类似语句
 
 
 * 获得因变量, 自变量和格点变量

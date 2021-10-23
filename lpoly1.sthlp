@@ -1,6 +1,6 @@
 {smcl}
 {right:Created time: Oct  1, 2021}
-{right:Updated time: Oct 17, 2021}
+{right:Updated time: Oct 24, 2021}
 {* -----------------------------title------------------------------------ *}{...}
 {p 0 17 2}
 {bf:[W-20] lpoly1} {hline 2} Perform one-dimensional local polynomial regression like {help lpoly}, but more coefficients can be additionally obtained. You can view source code in {browse "https://github.com/Meiting-Wang/lpoly1":github}.
@@ -10,7 +10,7 @@
 {title:Syntax}
 
 {p 8 10 2}
-{cmd:lpoly1} {it:{help varname:yvar}} {it:{help varname:xvar}}, {opth at:(varname)} [{opth ker:nel(lpoly1##Kernel:kernel)} {opt bw:idth(real>0)} {opt d:egree(integer>=0)} {opth keep:(strings:string)}]
+{cmd:lpoly1} {it:{help varname:yvar}} {it:{help varname:xvar}}, {opth at:(varname)} [{opth ker:nel(lpoly1##Kernel:kernel)} {opt bw:idth(real>0)} {opt d:egree(integer>=0)} {opt keep:(namelist)}]
 
 
 {* -----------------------------Contents------------------------------------ *}{...}
@@ -48,7 +48,7 @@ It is worth noting that this command can be only used in version 16.0 or later.
 {synopt :{opth ker:nel(lpoly1##Kernel:kernel)}}Specify the kernel function, {bf:gaussian} as the default.{p_end}
 {synopt :{opt bw:idth(real>0)}}Specify kernel bandwidth. A positive real number is required. 0.1 as the default.{p_end}
 {synopt :{opt d:egree(integer>=0)}}Specify the degree of the polynomial. A nonnegative integer number is required. 3 as the default.{p_end}
-{synopt :{opth keep:(strings:string)}}Choose which variables in {bf:beta0}, {bf:beta1},..., {bf:betap} to keep.{p_end}
+{synopt :{opt keep:(namelist)}}Choose which variables in {bf:beta0}, {bf:beta1},..., {bf:betap} to keep.{p_end}
 {synoptline}
 {space 4}{it:Notes}: Variables in {opth at:(varname)} and {it:{help varname:xvar}} should not be the same.
 
@@ -74,10 +74,14 @@ It is worth noting that this command can be only used in version 16.0 or later.
 {* -----------------------------Examples------------------------------------ *}{...}
 {marker Examples}{title:Examples}
 
-{p 4 4 2}Do a local polynomial regression of Y on X at x{p_end}
+{p 4 4 2}Do one-dimensional local polynomial regression of Y on X at x{p_end}
 {p 8 10 2}. {bf:lpoly1 Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian)}{p_end}
 
-{p 4 4 2}Use the official command {help lpoly} to do the same to verify the correctness of the result above.{p_end}
+{p 4 4 2}Choose specified variables to keep{p_end}
+{p 8 10 2}. {bf:lpoly1 Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian) keep(beta0 beta1 beta2)}{p_end}
+{p 8 10 2}. {bf:lpoly1 Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian) keep(beta0-beta2)}{p_end}
+
+{p 4 4 2}Use the official command {help lpoly} to do the same to verify the correctness of the result above{p_end}
 {p 8 10 2}. {bf:lpoly Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian) generate(beta0_cheak) nograph}{p_end}
 
 
