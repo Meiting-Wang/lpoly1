@@ -13,7 +13,7 @@ set seed 123456
 set obs 10000
 gen X = rnormal()
 gen Y = 1 + 5*X + rnormal()
-range x -1 1 10000
+range x -1 1 50
 
 * 使用命令估计
 timer clear 1
