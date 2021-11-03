@@ -1,6 +1,6 @@
 {smcl}
-{right:Created time: Oct  1, 2021}
-{right:Updated time: Oct 24, 2021}
+{right:Created time: Oct 1, 2021}
+{right:Updated time: Nov 3, 2021}
 {* -----------------------------title------------------------------------ *}{...}
 {p 0 17 2}
 {bf:[W-20] lpoly1} {hline 2} Perform one-dimensional local polynomial regression like {help lpoly}, but more coefficients can be additionally obtained. You can view source code in {browse "https://github.com/Meiting-Wang/lpoly1":github}.
@@ -20,6 +20,7 @@
 {help lpoly1##Description:Description}{break}
 {help lpoly1##Options:Options}{break}
 {help lpoly1##Kernel:Kernels}{break}
+{help lpoly1##Mata_function:Mata function}{break}
 {help lpoly1##Examples:Examples}{break}
 {help lpoly1##Author:Author}{break}
 {help lpoly1##Also_see:Also see}{break}
@@ -71,17 +72,65 @@ It is worth noting that this command can be only used in version 16.0 or later.
 {synoptline}
 
 
+{* -----------------------------Mata function------------------------------------ *}{...}
+{marker Mata_function}{title:Mata function}
+
+{p 4 4 2}
+In addition to the command {cmd:lpoly1}, we also provide the Mata function {cmd:one_dimen_lpoly()} to perform a one-dimensional local polynomial regression:
+
+{col 5}{bf:real matrix function one_dimen_lpoly(}
+	{col 9}{bf:real colvector Y_var,}
+	{col 9}{bf:real colvector X_var,}
+	{col 9}{bf:real colvector x_var,}
+	{col 9}{bf:string scalar kernel,}
+	{col 9}{bf:real scalar h,}
+	{col 9}{bf:real scalar p)}
+{col 5}{bf:{c -(}}
+	{col 9}{bf:......}
+{col 5}{bf:{c )-}}
+
+{p 4 4 2}
+The details of the function arguments are as follows:
+
+{synoptset 10}{...}
+{synopthdr :arguments}
+{synoptline}
+{synopt :{opt Y_var}}dependent variable{p_end}
+{synopt :{opt X_var}}independent variable{p_end}
+{synopt :{opt x_var}}grid point(the missing value must be at the end, if any){p_end}
+{synopt :{opt kernel}}kernel function(the function written must be one of the {help lpoly1##Kernel:kernel functions}){p_end}
+{synopt :{opt h}}bandwidth(needs to be greater than 0){p_end}
+{synopt :{opt p}}degree(needs to be a non-negative integer){p_end}
+{synoptline}
+{p 4 4 2}{it:Notes:} Before using this function, we should first convert the variables in the data into a column vector in Mata like {cmd:Y_var = st_data(.,"Y")}.{p_end}
+
+{p 4 4 2}
+Finally, the function will return a matrix corresponding to {bf:beta0}, {bf:beta1}, ..., {bf:betap} above column by column.
+
+
 {* -----------------------------Examples------------------------------------ *}{...}
 {marker Examples}{title:Examples}
 
 {p 4 4 2}Do one-dimensional local polynomial regression of Y on X at x{p_end}
+
 {p 8 10 2}. {bf:lpoly1 Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian)}{p_end}
 
 {p 4 4 2}Choose specified variables to keep{p_end}
+
 {p 8 10 2}. {bf:lpoly1 Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian) keep(beta0 beta1 beta2)}{p_end}
 {p 8 10 2}. {bf:lpoly1 Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian) keep(beta0-beta2)}{p_end}
 
+{p 4 4 2}Do a one-dimensional local polynomial regression with the Mata function {cmd:one_dimen_lpoly()}:{p_end}
+
+{p 10 12 2}{bf:mata:}{p_end}
+{p 12 14 2}{bf:Y_var = st_data(.,"Y")}{p_end}
+{p 12 14 2}{bf:X_var = st_data(.,"X")}{p_end}
+{p 12 14 2}{bf:x_var = st_data(.,"x")}{p_end}
+{p 12 14 2}{bf:BETA = one_dimen_lpoly(Y_var, X_var, x_var, "gaussian", 0.1, 3)}{p_end}
+{p 10 12 2}{bf:end}{p_end}
+
 {p 4 4 2}Use the official command {help lpoly} to do the same to verify the correctness of the result above{p_end}
+
 {p 8 10 2}. {bf:lpoly Y X, at(x) bwidth(0.1) degree(3) kernel(gaussian) generate(beta0_cheak) nograph}{p_end}
 
 
@@ -99,4 +148,5 @@ wangmeiting92@gmail.com
 {marker Also_see}{title:Also see}
 
 {space 4}{help lpoly}
+{space 4}{help lpoly2}(already installed)   {col 40}{stata `"net install lpoly2, from("https://raw.githubusercontent.com/Meiting-Wang/lpoly2/main")"':install lpoly2}(to install)
 
