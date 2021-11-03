@@ -1,80 +1,8 @@
-* Description: Do one-dimensional local polynomial regression.
-* Author: Meiting Wang, Ph.D. Candidate, Institute for Economic and Social Research, Jinan University
-* Email: wangmeiting92@gmail.com
-* Created on Oct 1, 2021
-* Updated on Oct 17, 2021
-
-
-*-------------------------主程序-----------------------------
-program define lpoly1
-version 16.0
-
-syntax varlist(min=2 max=2 numeric) , at(varlist numeric max=1) [KERnel(string) BWidth(numlist max=1 >0) Degree(numlist max=1 >=0 integer) keep(string)]
-
-* 默认值(设定 degree keep kernel bwidth 的默认值)
-if "`degree'" == "" {
-	local degree = 3
-}
-if "`keep'" == "" {
-	local keep "beta0"
-	if `degree' >= 1 {
-		forvalues i = 1/`degree' {
-			local keep "`keep' beta`i'"
-		}
-	}
-}
-if "`kernel'" == "" {
-	local kernel "gaussian"
-}
-if "`bwidth'" == "" {
-	local bwidth = 0.1
-}
-
-
-* 错误输入识别
-if ~ustrregexm("`keep'","(^beta\d(\s+beta\d)*$)|(^beta\d-beta\d$)") {
-	dis as error "Option {opt keep} synatx error"
-	error 9999
-} //保证 keep 输入的是 "beta0 beta1 ..." 或 "beta0-beta2" 的类似语句
-
-
-* 获得因变量, 自变量和格点变量
-tokenize `varlist'
-local Y "`1'"
-local X "`2'"
-local x "`at'"
-if "`x'" == "`X'" {
-	dis as error "Variables in {opt at(varname)} and {it:xvar} should not be the same."
-	error 9999
-} //以保证 at(varname) 和 xvar 中的变量不一样
-
-
-* 使用子程序中的 one_dimen_lpoly() 函数，计算 one dimensional 的 lpoly, 并保存所设定的变量
-qui ds
-local varlist_old "`r(varlist)'"
-mata: one_dimen_lpoly("`Y'","`X'","`x'","`kernel'",`bwidth',`degree')
-keep `varlist_old' `keep'
-
-
-* 输入参数展示
-dis as text "Parameters:"
-dis _col(6) as text "bwidth = {result:`bwidth'}"
-dis _col(6) as text "degree = {result:`degree'}"
-dis _col(6) as text "kernel = {result:`kernel'}"
-dis _col(6) _s(2) as text "keep = {result:`keep'}"
-
-end
-
-
-
-*--------------------------子程序-----------------------------
-/* 该 Mata 函数能计算 one dimensional 的 lpoly，并把结果储存在 Stata 数据集的对应变量中(beta0 beta1 ... betap) */
-version 16.0
 mata:
-void function one_dimen_lpoly(
-	string scalar Y_var, //dependent variable
-	string scalar X_var, //independent variable
-	string scalar x_var, //grid point(the missing value must be at the end, if any.)
+real matrix function one_dimen_lpoly(
+	real colvector Y_var, //dependent variable
+	real colvector X_var, //independent variable
+	real colvector x_var, //grid point(the missing value must be at the end, if any.)
 	string scalar kernel, //kernel function(the function written must be one of gaussian_m, gaussian, epanechnikov, epan2, biweight, cosine, rectangle, triangle, parzen)
 	real scalar h, //bandwidth(bandwidth needs to be greater than 0)
 	real scalar p) //degree(degree needs to be a non-negative integer)
@@ -89,14 +17,11 @@ void function one_dimen_lpoly(
 		exit(9999)
 	} //保证 p 为非负整数
 
-	/* 得到没有缺漏值的 Y_raw X_raw x */
-	Y_raw = st_data(.,Y_var)
-	X_raw = st_data(.,X_var)
-	x = st_data(.,x_var)
-	Y_X_nomiss = (Y_raw:!=.):&(X_raw:!=.)
-	Y_raw = select(Y_raw,Y_X_nomiss)
-	X_raw = select(X_raw,Y_X_nomiss)
-	x = select(x,x:!=.)
+	/* 得到没有缺漏值的 Y_raw X_raw x, (Y_raw X_raw) 匹配 */
+	Y_X_nomiss = (Y_var:!=.):&(X_var:!=.)
+	Y_raw = select(Y_var,Y_X_nomiss)
+	X_raw = select(X_var,Y_X_nomiss)
+	x = select(x_var,x_var:!=.)
 	
 	/* 得到 q */
 	q = rows(x)
@@ -172,7 +97,7 @@ void function one_dimen_lpoly(
 	}
 	BETA = BETA * diag((factorial(0..p) :/ (J(1,p+1,h):^(0..p)))) //得到符合 derivative 的 BETA
 
-	/* 将 BETA 转化为 Stata 内存中的变量(beta0 beta1 ... betap) */
-	st_store((1,rows(BETA)), st_addvar("double",J(1,p+1,"beta"):+strofreal(0..p)), BETA)
+	/* 返回 BETA */
+	return(BETA)
 }
 end
